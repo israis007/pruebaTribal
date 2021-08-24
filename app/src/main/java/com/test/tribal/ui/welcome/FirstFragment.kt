@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.test.tribal.R
 import com.test.tribal.ui.welcome.databinding.FragmentFirstBinding
 
 /**
