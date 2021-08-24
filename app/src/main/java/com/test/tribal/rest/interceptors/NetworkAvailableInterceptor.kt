@@ -3,7 +3,7 @@ package com.test.tribal.rest.interceptors
 import android.util.Log
 import com.test.tribal.App
 import com.test.tribal.rest.exceptions.NoNetworkAvalaibleException
-import com.test.tribal.ui.tools.NetworkChecker
+import com.test.tribal.tools.NetworkChecker
 import okhttp3.Interceptor
 import okhttp3.Response
 

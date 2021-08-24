@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
+
+    <!-- Official colors from documentation -->
+    <color name="colorPrimary">#385140</color>
+    <color name="colorSecondary">#f9fff3</color>
+    <color name="gradient1">#dbd5a4</color>
+    <color name="gradient2">#649173</color>
+    <color name="empty">#d2dccf</color>
+    <color name="colorH3">#587d64</color>
+    <color name="colorP">#85af93</color>
+
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="card_background">#BAE0DD</color>
@@ -9,4 +18,6 @@
     <color name="transparent">#00FFFFFF</color>
     <color name="white">#FFFFFF</color>
     <color name="divider_background">@color/white</color>
+
+
 </resources>
