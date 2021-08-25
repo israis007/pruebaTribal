@@ -1,4 +1,4 @@
-package com.test.tribal.rest.punkapi
+package com.test.tribal.rest.unsplashapi
 
 import com.google.gson.Gson
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory

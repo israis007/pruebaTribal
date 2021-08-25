@@ -9,8 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.test.tribal.databinding.FragmentHomeBinding
+import com.test.tribal.rest.objects.StatusType
+import com.test.tribal.ui.base.ActivityBase
+import com.test.tribal.ui.base.FragmentBase
+import com.test.tribal.ui.mainscreen.HomeActivity
 
-class HomeFragment : Fragment() {
+class HomeFragment : FragmentBase() {
 
     private lateinit var homeViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
@@ -23,22 +27,45 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+    ): View {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
-        return root
+
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        homeViewModel =
+            ViewModelProvider(this).get(HomeViewModel::class.java)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun setListeners() {
+
+    }
+
+    override fun setObservers() {
+
+        homeViewModel.response.observe(viewLifecycleOwner) {
+            val response = it ?: return@observe
+            (requireActivity() as ActivityBase).showLoading(true)
+            when (response.statusType) {
+                StatusType.SUCCESS -> {
+                    (requireActivity() as ActivityBase).showLoading(true)
+                }
+                StatusType.FAILED -> TODO()
+                StatusType.ERROR -> TODO()
+                StatusType.LOADING -> {
+                    (requireActivity() as ActivityBase).showLoading(true)
+                }
+            }
+        }
     }
 }

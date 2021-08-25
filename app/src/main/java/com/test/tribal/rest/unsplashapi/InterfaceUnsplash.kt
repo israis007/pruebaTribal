@@ -1,4 +1,4 @@
-package com.test.tribal.rest.punkapi
+package com.test.tribal.rest.unsplashapi
 
 import com.test.tribal.models.Photos
 import retrofit2.Response
