@@ -1,41 +1,90 @@
 package com.test.tribal.ui.welcome
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import com.test.tribal.R
 import com.test.tribal.databinding.ActivityWelcomeBinding
+import com.test.tribal.models.Customization
+import com.test.tribal.ui.base.ActivityBase
+import com.test.tribal.ui.mainscreen.MainActivityView
 
-class WelcomeActivity : AppCompatActivity() {
+class WelcomeActivity : ActivityBase() {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityWelcomeBinding
+    private val binding: ActivityWelcomeBinding by lazy {
+        DataBindingUtil.setContentView(this@WelcomeActivity, R.layout.activity_welcome)
+    }
+    private lateinit var viewModel: WelcomeActivityViewModel
+    private lateinit var adapter: BoardingAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityWelcomeBinding.inflate(layoutInflater)
+        viewModel = ViewModelProvider(this)[WelcomeActivityViewModel::class.java]
+        viewModel.setFirstText(this)
+
+        binding.apply {
+            welcomeVM       = viewModel
+            lifecycleOwner  = this@WelcomeActivity
+        }
+
+        adapter = BoardingAdapter(this@WelcomeActivity, listOf(
+            Customization().apply {
+                image       = R.drawable.plant_1
+                background  = R.drawable.back_1
+                isScalable  = false
+            },
+            Customization().apply {
+                image       = R.drawable.plant_2
+                background  = R.drawable.back_2
+                isScalable  = true
+            },
+            Customization().apply {
+                image       = R.drawable.plant_4
+                background  = R.drawable.back_1
+                isScalable  = true
+            }
+        ))
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
+        setObservers()
+        setListeners()
 
-        val navController = findNavController(R.id.nav_host_fragment_content_welcome)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
+        binding.actWelVp2Pager.adapter = adapter
+        binding.actWelVp2Pager.registerOnPageChangeCallback(viewModel.createPageListener())
+        binding.actWelcWdiIndicator.setViewPager2(binding.actWelVp2Pager)
 
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_welcome)
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
+    override fun setListeners() {
+
+    }
+
+    override fun setObservers() {
+        viewModel.selectedPage.observe(this@WelcomeActivity) {
+            val page = it ?: return@observe
+            when(page){
+                0 -> {
+                    viewModel.title.postValue(getString(R.string.boarding_text1))
+                    viewModel.setShowNext(false)
+                }
+                1 -> {
+                    viewModel.title.postValue(getString(R.string.boarding_text2))
+                    viewModel.setShowNext(false)
+                }
+                2 -> {
+                    viewModel.title.postValue(getString(R.string.boarding_text3))
+                    viewModel.setShowNext(true)
+                }
+            }
+        }
+
+        viewModel.changeFragment.observe(this@WelcomeActivity) {
+            val change = it ?: return@observe
+            if (change && binding.actWelVp2Pager.currentItem != 2) {
+                binding.actWelVp2Pager.currentItem = binding.actWelVp2Pager.currentItem + 1
+            } else
+                super.launchActivity(MainActivityView::class.java)
+        }
     }
 }

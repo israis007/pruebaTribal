@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 class BoardingFragmentViewModel : ViewModel() {
 
     val text = MutableLiveData<String>()
-    val image = MutableLiveData<Int>()
+    val image = MutableLiveData<Integer>()
+
+
 
 }

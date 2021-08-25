@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+        <variable
+            name="errorDialog"
+            type="com.test.tribal.ui.base.viewmodels.BaseErrorViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/empty"
+        >
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/error_actv_title"
+            style="@style/Text_H2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textAlignment="center"
+            android:text="@{errorDialog.title}"
+            tools:text="¡A ocurrido un error!"
+            />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/error_actv_message"
+            style="@style/Text_H3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/error_actv_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textAlignment="center"
+            android:text="@{errorDialog.message}"
+            tools:text="No fue posible comunicarse con el servidor"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

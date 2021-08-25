@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.test.tribal.ui.welcome.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        android:name="com.test.tribal.ui.welcome.fragments.BoardingFragment"
+        android:label="@string/boarding_text1"
+        tools:layout="@layout/fragment_onboarding">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
@@ -17,12 +17,22 @@
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.test.tribal.ui.welcome.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        android:name="com.test.tribal.ui.welcome.fragments.BoardingFragment"
+        android:label="@string/boarding_text2"
+        tools:layout="@layout/fragment_onboarding">
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
+            android:id="@+id/action_SecondFragment_to_ThirdFragment"
+            app:destination="@id/ThirdFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ThirdFragment"
+        android:name="com.test.tribal.ui.welcome.fragments.BoardingFragment"
+        android:label="@string/boarding_text3"
+        tools:layout="@layout/fragment_onboarding">
+
+        <action
+            android:id="@+id/action_ThirdFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
     </fragment>
 </navigation>

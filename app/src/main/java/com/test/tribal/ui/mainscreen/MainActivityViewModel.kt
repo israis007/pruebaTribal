@@ -2,24 +2,24 @@ package com.test.tribal.ui.mainscreen
 
 import android.view.View
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewModelScope
 import com.test.tribal.App
 import com.test.tribal.R
 import com.test.tribal.rest.punkapi.RepositoryUnsplash
-import com.test.tribal.ui.base.BaseModel
 import com.test.tribal.ui.mainscreen.models.BeerModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MainActivityViewModel: BaseModel() {
+class MainActivityViewModel: ViewModel() {
 
     val page = MutableLiveData<Int>()
     private val elementsByPage = MutableLiveData<Int>()
     var beerRetro = MutableLiveData<List<BeerModel>>()
-    var busy = MutableLiveData<Integer>()
-    var showNoInternet = MutableLiveData<Integer>()
-    var showMainLayout = MutableLiveData<Integer>()
+    var busy = MutableLiveData<Int>()
+    var showNoInternet = MutableLiveData<Int>()
+    var showMainLayout = MutableLiveData<Int>()
     var tagline = MutableLiveData<String>()
     var description = MutableLiveData<String>()
     var brewedDate = MutableLiveData<String>()
@@ -31,9 +31,9 @@ class MainActivityViewModel: BaseModel() {
     private var pageAfter = App.instance.resources.getInteger(R.integer.pageBegin)
 
     init {
-        busy.value = View.VISIBLE as Integer
-        showNoInternet.postValue(View.GONE as Integer)
-        showMainLayout.postValue(View.VISIBLE as Integer)
+        busy.value = View.VISIBLE
+        showNoInternet.postValue(View.GONE)
+        showMainLayout.postValue(View.VISIBLE)
         page.value = App.instance.resources.getInteger(R.integer.pageBegin)
         elementsByPage.value = App.instance.resources.getInteger(R.integer.elementsByPage)
         tagline.value = ""
@@ -46,8 +46,8 @@ class MainActivityViewModel: BaseModel() {
     lateinit var activityViewModel: ViewModelStoreOwner
 
     fun changeViews(noInternet: Boolean){
-        showNoInternet.value = if (noInternet) View.GONE as Integer else View.VISIBLE as Integer
-        showMainLayout.value = if (noInternet) View.VISIBLE as Integer else View.GONE as Integer
+        showNoInternet.value = if (noInternet) View.GONE else View.VISIBLE 
+        showMainLayout.value = if (noInternet) View.VISIBLE else View.GONE 
     }
 
     fun updatePage(isUp: Boolean){
@@ -64,22 +64,22 @@ class MainActivityViewModel: BaseModel() {
     }
 
     fun getBeersRetro(){
-        busy.value = View.VISIBLE as Integer
+        busy.value = View.VISIBLE 
         viewModelScope.launch(Dispatchers.IO) {
-            val chelas = RepositoryUnsplash.getBeers(
-                activityViewModel,
-                page.value!!.toInt(),
-                elementsByPage.value!!.toInt()
-            )
-            if (chelas == 44) {
-                showNoInternet.postValue(View.VISIBLE as Integer)
-                showMainLayout.postValue(View.GONE as Integer)
-                return@launch
-            } else {
-                showNoInternet.postValue(View.GONE as Integer)
-                showMainLayout.postValue(View.VISIBLE as Integer)
-                beerRetro.postValue(chelas as List<BeerModel>)
-            }
+//            val chelas = RepositoryUnsplash.getBeers(
+//                activityViewModel,
+//                page.value!!.toInt(),
+//                elementsByPage.value!!.toInt()
+//            )
+//            if (chelas == 44) {
+//                showNoInternet.postValue(View.VISIBLE )
+//                showMainLayout.postValue(View.GONE )
+//                return@launch
+//            } else {
+//                showNoInternet.postValue(View.GONE )
+//                showMainLayout.postValue(View.VISIBLE )
+//                beerRetro.postValue(chelas as List<BeerModel>)
+//            }
         }
     }
 

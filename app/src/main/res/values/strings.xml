@@ -14,4 +14,6 @@
     <string name="boarding_text2">Condensed stories for a busy lifestyle</string>
     <string name="boarding_text3">Beautiful award winning pictures</string>
     <string name="boarding_btn_text">Get started</string>
+    <string name="generic_accept">Accept</string>
+    <string name="generic_cancel">Cancel</string>
 </resources>

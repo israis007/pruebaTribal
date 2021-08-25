@@ -33,14 +33,14 @@ class MainActivityView : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        mainVM = ViewModelProvider(this)[MainActivityViewModel::class.java]
+        //mainVM = ViewModelProvider(this)[MainActivityViewModel::class.java]
         binding.mainActivityViewModel = mainVM
         mainVM.activityViewModel = this
         binding.lifecycleOwner = this
 
         //Creation of LayoutManager
         linearlm.orientation = RecyclerView.VERTICAL
-        main_recview.layoutManager = linearlm
+        //main_recview.layoutManager = linearlm
         val listaToAdap = ArrayList<BeerModel>()
 
         //Adding a clean item to show loading circle
@@ -70,39 +70,39 @@ class MainActivityView : AppCompatActivity() {
                 mainVM.brewedDate.value = beerModel.first_brewed
             }
         })
-        main_recview.adapter = adapter
-        main_recview.setHasFixedSize(false)
-        main_recview.isNestedScrollingEnabled = true
-        nonetwork_layout.visibility = View.GONE
-
-        //Events
-        main_swiperl.setOnRefreshListener {
-            refreshData(true)
-        }
-        main_recview.addOnScrollListener(object: RecyclerView.OnScrollListener(){
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                if (isScrolling && (linearlm.itemCount - linearlm.findFirstVisibleItemPosition() - linearlm.childCount == 0)){
-                    isScrolling = false
-                    refreshData(false)
-                }
-                if (firstTime){
-                    firstTime = false
-                    linearlm.scrollToPosition(0)
-                }
-            }
-
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
-                    isScrolling = true
-            }
-        })
-        main_actv_description_text.movementMethod = ScrollingMovementMethod()
-        main_actv_food_text.movementMethod = ScrollingMovementMethod()
-        nonetwork_layout.setOnClickListener {
-            refreshData(false)
-        }
+//        main_recview.adapter = adapter
+//        main_recview.setHasFixedSize(false)
+//        main_recview.isNestedScrollingEnabled = true
+//        nonetwork_layout.visibility = View.GONE
+//
+//        //Events
+//        main_swiperl.setOnRefreshListener {
+//            refreshData(true)
+//        }
+//        main_recview.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                super.onScrolled(recyclerView, dx, dy)
+//                if (isScrolling && (linearlm.itemCount - linearlm.findFirstVisibleItemPosition() - linearlm.childCount == 0)){
+//                    isScrolling = false
+//                    refreshData(false)
+//                }
+//                if (firstTime){
+//                    firstTime = false
+//                    linearlm.scrollToPosition(0)
+//                }
+//            }
+//
+//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+//                super.onScrollStateChanged(recyclerView, newState)
+//                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
+//                    isScrolling = true
+//            }
+//        })
+//        main_actv_description_text.movementMethod = ScrollingMovementMethod()
+//        main_actv_food_text.movementMethod = ScrollingMovementMethod()
+//        nonetwork_layout.setOnClickListener {
+//            refreshData(false)
+//        }
 
         //Observers
         mainVM.beerRetro.observe(this, Observer {
@@ -111,29 +111,29 @@ class MainActivityView : AppCompatActivity() {
         mainVM.nameToolbar.observe(this, Observer {
             this.title = mainVM.nameToolbar.value.toString()
         })
-        mainVM.imageURL.observe(this, Observer{
-            Glide.with(this)
-                .setDefaultRequestOptions(RequestOptions().fitCenter())
-                .load(mainVM.imageURL.value.toString())
-                .placeholder(android.R.drawable.ic_menu_search)
-                .into(main_iv)
-        })
+//        mainVM.imageURL.observe(this, Observer{
+//            Glide.with(this)
+//                .setDefaultRequestOptions(RequestOptions().fitCenter())
+//                .load(mainVM.imageURL.value.toString())
+//                .placeholder(android.R.drawable.ic_menu_search)
+//                .into(main_iv)
+//        })
 
         //Get first Data
-        mainVM.showNoInternet.value = View.GONE as Integer
-        mainVM.showMainLayout.value = View.VISIBLE as Integer
+        mainVM.showNoInternet.value = View.GONE
+        mainVM.showMainLayout.value = View.VISIBLE
         refreshData(false)
     }
 
     private fun refreshData(isUp: Boolean){
-        nonetwork_layout.visibility = View.GONE
-        this.isUp = isUp
-        if (mainVM.page.value!!.toInt() == 1)
-            main_swiperl.isRefreshing = false
-        else {
-            mainVM.updatePage(isUp)
-            mainVM.getBeersRetro()
-        }
+//        nonetwork_layout.visibility = View.GONE
+//        this.isUp = isUp
+//        if (mainVM.page.value!!.toInt() == 1)
+//            main_swiperl.isRefreshing = false
+//        else {
+//            mainVM.updatePage(isUp)
+//            mainVM.getBeersRetro()
+//        }
     }
 
     private fun loadRecyclerView(beers: List<BeerModel>){
@@ -142,7 +142,7 @@ class MainActivityView : AppCompatActivity() {
             linearlm.scrollToPosition(0)
         } else
             adapter.addItemsAfter(beers)
-        mainVM.busy.value = View.GONE as Integer
-        main_swiperl.isRefreshing = false
+        mainVM.busy.value = View.GONE
+        //main_swiperl.isRefreshing = false
     }
 }

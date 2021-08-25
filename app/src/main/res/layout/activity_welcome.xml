@@ -18,6 +18,16 @@
         android:background="@color/empty"
         >
 
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/act_wel_vp2_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/Text_H1"
             android:id="@+id/act_welc_actv_title"
@@ -31,16 +41,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/boarding_text1"/>
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/act_wel_vp2_pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
 
         <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
             android:id="@+id/act_welc_wdi_indicator"
