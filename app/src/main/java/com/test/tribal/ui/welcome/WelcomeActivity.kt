@@ -7,7 +7,7 @@ import com.test.tribal.R
 import com.test.tribal.databinding.ActivityWelcomeBinding
 import com.test.tribal.models.Customization
 import com.test.tribal.ui.base.ActivityBase
-import com.test.tribal.ui.mainscreen.MainActivityView
+import com.test.tribal.ui.mainscreen.HomeActivity
 
 class WelcomeActivity : ActivityBase() {
 
@@ -84,7 +84,7 @@ class WelcomeActivity : ActivityBase() {
             if (change && binding.actWelVp2Pager.currentItem != 2) {
                 binding.actWelVp2Pager.currentItem = binding.actWelVp2Pager.currentItem + 1
             } else
-                super.launchActivity(MainActivityView::class.java)
+                super.launchActivity(HomeActivity::class.java)
         }
     }
 }
