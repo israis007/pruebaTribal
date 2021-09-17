@@ -27,7 +27,7 @@ class HomeViewModel : ViewModel() {
         _response.postValue(Resource.loading())
         viewModelScope.launch(Dispatchers.IO){
             try {
-                val api = RepositoryUnsplash.clientAPI().getPhotos(page, BuildConfig.Access_Key)
+                val api = RepositoryUnsplash.clientAPI().getPhotos(page, BuildConfig.Secret_Key)
                 if (api.isSuccessful && api.code() == 200)
                     _response.postValue(Resource.success(api.body() ?: emptyList()))
                 else

@@ -1,5 +1,6 @@
 package com.test.tribal.ui.mainscreen.ui.home
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,10 +9,12 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.test.tribal.R
 import com.test.tribal.databinding.FragmentHomeBinding
 import com.test.tribal.rest.objects.StatusType
 import com.test.tribal.ui.base.ActivityBase
 import com.test.tribal.ui.base.FragmentBase
+import com.test.tribal.ui.base.callback.DialogCallBack
 import com.test.tribal.ui.mainscreen.HomeActivity
 
 class HomeFragment : FragmentBase() {
@@ -31,15 +34,17 @@ class HomeFragment : FragmentBase() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+
+        setListeners()
+        setObservers()
+
+        homeViewModel.getPhotosFromServer(1)
     }
 
     override fun onDestroyView() {
@@ -55,15 +60,24 @@ class HomeFragment : FragmentBase() {
 
         homeViewModel.response.observe(viewLifecycleOwner) {
             val response = it ?: return@observe
-            (requireActivity() as ActivityBase).showLoading(true)
+            val act = (requireActivity() as ActivityBase)
+            act.showLoading(false)
             when (response.statusType) {
                 StatusType.SUCCESS -> {
-                    (requireActivity() as ActivityBase).showLoading(true)
+
                 }
                 StatusType.FAILED -> TODO()
-                StatusType.ERROR -> TODO()
+                StatusType.ERROR -> {
+                    act.showErrorMessage(getString(R.string.error_get_images), response.message ?: "", object: DialogCallBack{
+                        override fun onAcceptClickListener(dialogInterface: DialogInterface) {
+                            dialogInterface.dismiss()
+                        }
+                        override fun onCancelClickListener(dialogInterface: DialogInterface) {}
+                        override fun onDismissClickListener(dialogInterface: DialogInterface) {}
+                    })
+                }
                 StatusType.LOADING -> {
-                    (requireActivity() as ActivityBase).showLoading(true)
+                    act.showLoading(true)
                 }
             }
         }
