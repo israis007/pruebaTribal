@@ -9,8 +9,13 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import com.test.tribal.R
 import com.test.tribal.databinding.FragmentHomeBinding
+import com.test.tribal.models.Photos
 import com.test.tribal.rest.objects.StatusType
 import com.test.tribal.ui.base.ActivityBase
 import com.test.tribal.ui.base.FragmentBase
@@ -21,6 +26,7 @@ class HomeFragment : FragmentBase() {
 
     private lateinit var homeViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
+    private lateinit var adapter: HomeAdapter
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -33,6 +39,22 @@ class HomeFragment : FragmentBase() {
     ): View {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        adapter = HomeAdapter(requireContext(), emptyList(), object: HomeAdapter.HomeViewListener{
+            override fun onClickLeague(player: Photos) {
+                (requireActivity() as ActivityBase).showToastMessage(getString(R.string.wait_image))
+            }
+        })
+
+        binding.fraHomeRv.apply {
+            layoutManager = FlexboxLayoutManager(requireContext()).apply {
+                flexDirection = FlexDirection.COLUMN
+                justifyContent = JustifyContent.SPACE_BETWEEN
+            }
+            //layoutManager = LinearLayoutManager(requireContext())
+            adapter = this@HomeFragment.adapter
+            isNestedScrollingEnabled = true
+        }
 
         return binding.root
     }
@@ -64,9 +86,9 @@ class HomeFragment : FragmentBase() {
             act.showLoading(false)
             when (response.statusType) {
                 StatusType.SUCCESS -> {
-
+                    adapter.onAddItem(response.data!!)
                 }
-                StatusType.FAILED -> TODO()
+                StatusType.FAILED -> {}
                 StatusType.ERROR -> {
                     act.showErrorMessage(getString(R.string.error_get_images), response.message ?: "", object: DialogCallBack{
                         override fun onAcceptClickListener(dialogInterface: DialogInterface) {

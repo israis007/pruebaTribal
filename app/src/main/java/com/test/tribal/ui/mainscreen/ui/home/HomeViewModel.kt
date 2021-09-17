@@ -20,8 +20,8 @@ class HomeViewModel : ViewModel() {
     }
     val text: LiveData<String> = _text
 
-    private val _response = MutableLiveData<Resource<List<Photos>>>()
-    val response : LiveData<Resource<List<Photos>>> get() = _response
+    private val _response = MutableLiveData<Resource<Photos>>()
+    val response : LiveData<Resource<Photos>> get() = _response
 
     fun getPhotosFromServer(page: Int){
         _response.postValue(Resource.loading())
@@ -29,7 +29,7 @@ class HomeViewModel : ViewModel() {
             try {
                 val api = RepositoryUnsplash.clientAPI().getPhotos(page, BuildConfig.Secret_Key)
                 if (api.isSuccessful && api.code() == 200)
-                    _response.postValue(Resource.success(api.body() ?: emptyList()))
+                    _response.postValue(Resource.success(api.body()!!))
                 else
                     _response.postValue(Resource.error("Ocurrió un error al obtener las fotografías {${api.code()}}", null))
             } catch (e: Exception){
